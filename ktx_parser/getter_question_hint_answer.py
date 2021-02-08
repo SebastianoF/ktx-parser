@@ -1,27 +1,80 @@
-from typing import Dict
+from typing import Dict, List, Union
 from abs_getter import AbsGetter
+from pathlib import PosixPath
+
+from object_view import ObjectView
 
 
 class GetterQuestionHintAnswer(AbsGetter):
-    def __init__(self, input_file):
-        pass
+    def __init__(self, input_file: PosixPath):
+        self.input_file: PosixPath = input_file
+        self.keystarter: str = "<"
+        self.ktx_dict: Dict = None
+        self._ktx_to_dict()
 
-    def _ktx_to_dict(keystarter="<") -> Dict:
+    def _ktx_to_dict(self) -> Dict:
         """ parsing keyed text to a python dictionary. """
-        answer = dict()
+        if not input_file.exist():
+            raise ValueError(f"Input path {self.input_file} does not exist.")
 
         with open(self.input_file, "r+", encoding="utf-8") as f:
             lines = f.readlines()
 
+        ktx_dict = dict()
         k, val = "", ""
         for line in lines:
-            if line.startswith(keystarter):
-                k = line.replace(keystarter, "").strip()
+            if line.startswith(self.keystarter):
+                k = line.replace(self.keystarter, "").strip()
                 val = ""
             else:
                 val += line
 
             if k:
-                answer.update({k: val.strip()})
+                ktx_dict.update({k: val.strip()})
 
-        return answer
+        self.ktx_dict = ktx_dict
+
+    def _dict_to_ktx(self, output_file: PosixPath):
+        """ Store a python dictionary to a keyed text"""
+        with open(output_file, "w+") as f:
+            for k, val in self.ktx_dict.items():
+                f.write(f"{self.keystarter} {k}\n")
+                f.write(f"{val}\n\n")
+
+    def get_headers_keys(self) -> Union[List, Dict]:
+        return ["header", "subheader"]
+
+    def get_numbered_keys(self) -> Union[List, Dict]:
+        return ["q"]  # here we do not include "h", "a" as we want to show only the questions.
+
+    def get_initializer(self):
+        return f"""
+        # Instantiate a getter into the session
+        # and call hints and answers via its attributes hints and answers,
+        # E.g. get.hint(3) or get.answer(3)
+        from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
+        get = GetterQuestionHintAnswer({self.input_file})get_entries
+        """
+
+    def get_quantity_numbered_keys(self) -> int:
+        return max([int(q.replace("q", "")) for q in self.ktx_dict.keys() if "q" in q])
+
+    def get_entries(self):
+        """Returns the object view of what the user will query"""
+
+        def question(self, num: int):
+            return self.ktx_dict.get(f"q{num}")
+
+        def hint(self, num: int):
+            return self.ktx_dict.get(f"h{num}")
+
+        def answer(self, num: int):
+            return self.ktx_dict.get(f"a{num}")
+
+        dict_qha = dict(
+            question=question,
+            hint=hint,
+            answer=answer,
+        )
+
+        return ObjectView(dict_qha)
