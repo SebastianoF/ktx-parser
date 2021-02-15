@@ -1,8 +1,8 @@
 from typing import Dict, List, Union
-from abs_getter import AbsGetter
 from pathlib import PosixPath
 
-from object_view import ObjectView
+from ktx_parser.abs_getter import AbsGetter
+from ktx_parser.object_view import ObjectView
 
 
 class GetterQuestionHintAnswer(AbsGetter):
@@ -14,7 +14,7 @@ class GetterQuestionHintAnswer(AbsGetter):
 
     def _ktx_to_dict(self) -> Dict:
         """ parsing keyed text to a python dictionary. """
-        if not input_file.exist():
+        if not self.input_file.exist():
             raise ValueError(f"Input path {self.input_file} does not exist.")
 
         with open(self.input_file, "r+", encoding="utf-8") as f:
@@ -55,6 +55,9 @@ class GetterQuestionHintAnswer(AbsGetter):
         from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
         get = GetterQuestionHintAnswer({self.input_file})get_entries
         """
+
+    def get_dict(self):
+        return self.ktx_dict
 
     def get_quantity_numbered_keys(self) -> int:
         return max([int(q.replace("q", "")) for q in self.ktx_dict.keys() if "q" in q])
