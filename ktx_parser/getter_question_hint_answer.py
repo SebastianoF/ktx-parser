@@ -41,11 +41,13 @@ class GetterQuestionHintAnswer(AbsGetter):
                 f.write(f"{self.keystarter} {k}\n")
                 f.write(f"{val}\n\n")
 
-    def get_headers_keys(self) -> Union[List, Dict]:
+    @staticmethod
+    def get_headers_keys() -> Union[List, Dict]:
         return ["header", "subheader"]
 
-    def get_numbered_keys(self) -> Union[List, Dict]:
-        return ["q"]  # here we do not include "h", "a" as we want to show only the questions.
+    @staticmethod
+    def get_numbered_keys() -> Union[List, Dict]:
+        return {"questions": ["q"], "with_hints": ["q", "h"], "with_answers": ["q", "h", "a"]}
 
     def get_initializer(self):
         return f"""
@@ -59,8 +61,9 @@ class GetterQuestionHintAnswer(AbsGetter):
     def get_dict(self):
         return self.ktx_dict
 
-    def get_quantity_numbered_keys(self) -> int:
-        return max([int(q.replace("q", "")) for q in self.ktx_dict.keys() if "q" in q])
+    def get_quantity_numbered_keys(self) -> (int, int):
+        num_keys = [int(q.replace("q", "")) for q in self.ktx_dict if "q" in q]
+        return min(num_keys), max(num_keys)
 
     def get_entries(self):
         """Returns the object view of what the user will query"""
