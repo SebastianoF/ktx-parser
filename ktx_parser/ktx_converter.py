@@ -17,6 +17,7 @@ class KtxConverter:
         dict_formats = {
             "jupyter": FormatJupyter(self.getter).convert,
             "markdown": FormatMarkdown(self.getter).convert,
+            # add here other formats!
         }
         return ObjectView(dict_formats)
 

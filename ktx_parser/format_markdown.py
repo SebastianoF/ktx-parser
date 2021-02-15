@@ -12,25 +12,42 @@ class FormatMarkdown(AbsFormat):
         self.getter = getter
 
     def convert(self, destination_file: PosixPath, subset_numbered_keys: Optional[str] = None):
-        pass
 
+        ktx_dict = self.getter.get_dict()
+        destination_file = Path(destination_file)
 
-# def create_markdown(qha_dict, destination_filename, with_hints=False, with_solutions=False):
-#     # Create file name
-#     if with_hints:
-#         destination_filename += "_with_hints"
-#     if with_solutions:
-#         destination_filename += "_with_solutions"
+        # - Initialise file
+        md_file = mdutils.MdUtils(file_name=destination_file)
 
-#     # Initialise file
-#     mdfile = mdutils.MdUtils(file_name=destination_filename)
+        # - Write header if any:
+        for hdr_keys in self.getter.get_headers_keys():
+            md_file.write(ktx_dict[hdr_keys] + "\n")
 
-#     # Add headers
-#     mdfile.write(qha_dict["header"] + "\n")
-#     mdfile.write(qha_dict["sub_header"] + "\n")
+        # - Write numbered keys if any:
+        n_keys = self.getter.get_quantity_numbered_keys()
+        numbered_keys = self.getter.get_numbered_keys()
 
-#     # - Get number of questions:
-#     num_questions = max([int(q.replace("q", "")) for q in qha_dict.keys() if "q" in q])
+        if isinstance(numbered_keys, dict):
+            numbered_keys = numbered_keys[subset_numbered_keys]
+
+        num_numbered_keys_found = 0
+        for key in numbered_keys:
+            # - Add questions and empty spaces for answers
+            for n in range(n_keys[0], n_keys[1] + 1):
+                k = f"{key}{n}"
+                if k in ktx_dict.keys():
+                    num_numbered_keys_found += 1
+                    md_file.write(ktx_dict[k])
+
+        # Delete file if one with the same name is found
+        if destination_file.exists():
+            destination_file.unlink()
+
+        # Write sequence to file
+        md_file.create_md_file()
+
+        print(f"\nFile {destination_file} created with {num_numbered_keys_found} numbered keys.")
+
 
 #     # Add questions (and hint or answers if required)
 #     for n in range(1, num_questions + 1):
@@ -39,10 +56,3 @@ class FormatMarkdown(AbsFormat):
 #             mdfile.write(f"`{qha_dict[f'h{n}']}`")
 #         if with_solutions:
 #             mdfile.insert_code(qha_dict[f"a{n}"], language="python")
-
-#     # Delete file if one with the same name is found
-#     if os.path.exists(destination_filename):
-#         os.remove(destination_filename)
-
-#     # Write sequence to file
-#     mdfile.create_md_file()
