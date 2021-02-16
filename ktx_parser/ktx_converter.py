@@ -9,9 +9,9 @@ from ktx_parser.format_markdown import FormatMarkdown
 
 
 class KtxConverter:
-    def __init__(self, path_to_source_file: PosixPath, getter: AbsGetter):
-        self.path_to_source_file: PosixPath = path_to_source_file
+    def __init__(self, getter: AbsGetter):
         self.getter: AbsGetter = getter
+        self.input_file: PosixPath = self.getter.input_file
 
     def to_format(self) -> ObjectView:
         dict_formats = {
@@ -22,9 +22,9 @@ class KtxConverter:
         return ObjectView(dict_formats)
 
     def get_dict(self) -> Dict:
-        if not self.path_to_source_file.suffix == ".ktx":
+        if not self.input_file.suffix == ".ktx":
             raise ValueError("Input source file is not a keyed text file.")
-        return self.getter.get_dict(self.path_to_source_file)
+        return self.getter.get_dict(self.input_file)
 
     def get(self) -> AbsGetter:
-        return self.getter.get_entries(self.path_to_source_file)  # Dictionary with question, hint answer open to n
+        return self.getter.get_entries(self.input_file)

@@ -14,7 +14,7 @@ class GetterQuestionHintAnswer(AbsGetter):
 
     def _ktx_to_dict(self) -> Dict:
         """ parsing keyed text to a python dictionary. """
-        if not self.input_file.exist():
+        if not self.input_file.exists():
             raise ValueError(f"Input path {self.input_file} does not exist.")
 
         with open(self.input_file, "r+", encoding="utf-8") as f:
@@ -43,11 +43,16 @@ class GetterQuestionHintAnswer(AbsGetter):
 
     @staticmethod
     def get_headers_keys() -> Union[List, Dict]:
-        return ["header", "subheader"]
+        return ["header", "sub_header"]
 
     @staticmethod
     def get_numbered_keys() -> Union[List, Dict]:
-        return {"questions": ["q"], "with_hints": ["q", "h"], "with_answers": ["q", "h", "a"]}
+        return {
+            "question": ["q"],
+            "question_hint": ["q", "h"],
+            "question_answer": ["q", "a"],
+            "question_hint_answer": ["q", "h", "a"],
+        }
 
     def get_initializer(self):
         return f"""

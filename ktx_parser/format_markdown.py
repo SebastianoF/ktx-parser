@@ -17,7 +17,7 @@ class FormatMarkdown(AbsFormat):
         destination_file = Path(destination_file)
 
         # - Initialise file
-        md_file = mdutils.MdUtils(file_name=destination_file)
+        md_file = mdutils.MdUtils(file_name=str(destination_file))
 
         # - Write header if any:
         for hdr_keys in self.getter.get_headers_keys():

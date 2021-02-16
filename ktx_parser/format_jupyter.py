@@ -18,7 +18,6 @@ class FormatJupyter(AbsFormat):
 
         # Create cells sequence
         nb = nbf.v4.new_notebook()
-
         nb["cells"] = []
 
         # - Add header if any:
@@ -28,11 +27,13 @@ class FormatJupyter(AbsFormat):
         # - Add initializer - for interactive formats
         nb["cells"].append(nbf.v4.new_code_cell(self.getter.get_initializer()))
 
-        # - Get numbered keys:
+        # - Write numbered keys if any:
         n_keys = self.getter.get_quantity_numbered_keys()
         numbered_keys = self.getter.get_numbered_keys()
 
         if isinstance(numbered_keys, dict):
+            if subset_numbered_keys is None:
+                raise ValueError("Please specify a key for the provided dictionary of keyed text")
             numbered_keys = numbered_keys[subset_numbered_keys]
 
         num_numbered_keys_found = 0
@@ -50,6 +51,7 @@ class FormatJupyter(AbsFormat):
             destination_file.unlink()
 
         # Write sequence to file
-        nbf.write(nb, destination_file)
+        # with open(destination_file, "wb") as f:
+        nbf.write(nb, str(destination_file))
 
         print(f"\nFile {destination_file} created with {num_numbered_keys_found} numbered keys.")
