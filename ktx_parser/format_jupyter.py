@@ -21,15 +21,19 @@ class FormatJupyter(AbsFormat):
         ktx_dict = self.getter.get_dict()
         destination_file = Path(destination_file)
 
+        getter_tag = self.getter.get_getter_tag()
+        format_tag = self.get_format_tag()
+
         # Create cells sequence
         nb = nbf.v4.new_notebook()
         nb["cells"] = []
 
-        # - Add header if any:
+        # - Write header if any:
         for hdr_keys in self.getter.get_headers_keys():
-            nb["cells"].append(nbf.v4.new_markdown_cell(ktx_dict[hdr_keys]))
+            prefix, suffix = keys_to_decorators(getter_tag, format_tag, hdr_keys)
+            nb["cells"].append(nbf.v4.new_markdown_cell(prefix + ktx_dict[hdr_keys] + suffix))
 
-        # - Add initializer - for interactive formats
+        # - Write initializer - for interactive formats
         nb["cells"].append(nbf.v4.new_code_cell(self.getter.get_initializer()))
 
         # - Write numbered keys if any:
@@ -42,12 +46,13 @@ class FormatJupyter(AbsFormat):
             numbered_keys = numbered_keys[subset_numbered_keys]
 
         num_numbered_keys_found = 0
-        for key in numbered_keys:
-            for n in range(n_keys[0], n_keys[1] + 1):
+        for n in range(n_keys[0], n_keys[1] + 1):
+            for key in numbered_keys:
+                prefix, suffix = keys_to_decorators(getter_tag, format_tag, key)
                 k = f"{key}{n}"
                 if k in ktx_dict.keys():
                     num_numbered_keys_found += 1
-                    nb["cells"].append(nbf.v4.new_markdown_cell(f"#### {n}. " + ktx_dict[k]))
+                    nb["cells"].append(nbf.v4.new_markdown_cell(prefix + ktx_dict[k] + suffix))
                     nb["cells"].append(nbf.v4.new_code_cell(""))
 
         # - Delete file if one with the same name is found

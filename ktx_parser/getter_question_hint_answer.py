@@ -64,7 +64,7 @@ class GetterQuestionHintAnswer(AbsGetter):
 # and call hints and answers via its attributes hints and answers,
 # E.g. get.hint(3) or get.answer(3)
 from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
-get = GetterQuestionHintAnswer({self.input_file}).get_entries
+get = GetterQuestionHintAnswer('{self.input_file}'').get_entries
         """
 
     def get_dict(self):
