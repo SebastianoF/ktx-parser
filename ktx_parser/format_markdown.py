@@ -10,10 +10,11 @@ from ktx_parser.abs_getter import AbsGetter
 class FormatMarkdown(AbsFormat):
     def __init__(self, getter: AbsGetter):
         self.getter = getter
+        self.decorator = DECORATORS.get(self.getter.get_getter_tag())
 
     @staticmethod
     def get_format_tag() -> str:
-        return "jupyter"
+        return "markdown"
 
     def convert(self, destination_file: PosixPath, subset_numbered_keys: Optional[str] = None):
 
@@ -23,9 +24,25 @@ class FormatMarkdown(AbsFormat):
         # - Initialise file
         md_file = mdutils.MdUtils(file_name=str(destination_file))
 
+        # - load decorators
+        if self.decorator is not None:
+            self.decorator = self.decorator.get(self.get_format_tag())
+
         # - Write header if any:
         for hdr_keys in self.getter.get_headers_keys():
-            md_file.write(ktx_dict[hdr_keys] + "\n")
+            if self.decorator is not None:
+                deco = self.decorator.get(hdr_keys)
+                prefix = deco[0] if deco is not None else ""
+                suffix = deco[1] if deco is not None else ""
+            else:
+                prefix = ""
+                suffix = ""
+            # TODO call a function key to decorator returning ['', ''] if no keys for two layers, otherwise
+            # returning the corresponding key in the input decorator dictionary.
+            # prefix, suffix = tags_to_deco(getter_tag, format_tag, key), under decorators.py
+            # use it below as well.
+
+            md_file.write(prefix + ktx_dict[hdr_keys] + suffix)
 
         # - Write numbered keys if any:
         n_keys = self.getter.get_quantity_numbered_keys()
@@ -33,9 +50,6 @@ class FormatMarkdown(AbsFormat):
 
         if isinstance(numbered_keys, dict):
             numbered_keys = numbered_keys[subset_numbered_keys]
-
-        # - load decorators
-        # TODO
 
         num_numbered_keys_found = 0
         for key in numbered_keys:
