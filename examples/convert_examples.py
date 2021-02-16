@@ -19,11 +19,8 @@ CNV_MARKDOWN = HERE / "converted_to_markdown"
 
 if __name__ == "__main__":
 
-    if not CNV_JUPYTER.exists():
-        CNV_JUPYTER.mkdir()
-
-    if not CNV_MARKDOWN.exists():
-        CNV_MARKDOWN.mkdir()
+    CNV_JUPYTER.mkdir(exist_ok=True)
+    CNV_MARKDOWN.mkdir(exist_ok=True)
 
     for p in SOURCE.glob("*ktx"):
         getter = GetterQuestionHintAnswer(input_file=p)
