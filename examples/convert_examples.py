@@ -39,12 +39,12 @@ if __name__ == "__main__":
             subset_numbered_keys="question",
         )
 
-        # converter.to_format().markdown(  # pylint: disable=no-member
-        #     str(CNV_MARKDOWN / Path(p.name).stem) + "_questions_and_hints.md",
-        #     subset_numbered_keys="question_hints",
-        # )
+        converter.to_format().markdown(  # pylint: disable=no-member
+            str(CNV_MARKDOWN / Path(p.name).stem) + "_questions_and_hints.md",
+            subset_numbered_keys="question_hint",
+        )
 
-        # converter.to_format().markdown(  # pylint: disable=no-member
-        #     str(CNV_MARKDOWN / Path(p.name).stem) + "_questions_and_answers.md",
-        #     subset_numbered_keys="question_answer",
-        # )
+        converter.to_format().markdown(  # pylint: disable=no-member
+            str(CNV_MARKDOWN / Path(p.name).stem) + "_questions_and_answers.md",
+            subset_numbered_keys="question_answer",
+        )

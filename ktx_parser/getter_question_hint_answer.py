@@ -42,6 +42,10 @@ class GetterQuestionHintAnswer(AbsGetter):
                 f.write(f"{val}\n\n")
 
     @staticmethod
+    def get_getter_tag() -> str:
+        return "QuestionHintAnswer"
+
+    @staticmethod
     def get_headers_keys() -> Union[List, Dict]:
         return ["header", "sub_header"]
 
