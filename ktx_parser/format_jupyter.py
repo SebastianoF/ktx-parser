@@ -5,13 +5,12 @@ import nbformat as nbf
 
 from ktx_parser.abs_format import AbsFormat
 from ktx_parser.abs_getter import AbsGetter
-from ktx_parser import DECORATORS
+from ktx_parser.decorators import keys_to_decorators
 
 
 class FormatJupyter(AbsFormat):
     def __init__(self, getter: AbsGetter):
         self.getter = getter
-        self.decorator = DECORATORS.get(self.getter.get_getter_tag()).get(self.get_format_tag())
 
     @staticmethod
     def get_format_tag() -> str:
@@ -44,7 +43,6 @@ class FormatJupyter(AbsFormat):
 
         num_numbered_keys_found = 0
         for key in numbered_keys:
-            # - Add questions and empty spaces for answers
             for n in range(n_keys[0], n_keys[1] + 1):
                 k = f"{key}{n}"
                 if k in ktx_dict.keys():
@@ -52,12 +50,10 @@ class FormatJupyter(AbsFormat):
                     nb["cells"].append(nbf.v4.new_markdown_cell(f"#### {n}. " + ktx_dict[k]))
                     nb["cells"].append(nbf.v4.new_code_cell(""))
 
-        # Delete file if one with the same name is found
+        # - Delete file if one with the same name is found
         if destination_file.exists():
             destination_file.unlink()
 
-        # Write sequence to file
-        # with open(destination_file, "wb") as f:
+        # - Save result to file
         nbf.write(nb, str(destination_file))
-
-        print(f"\nFile {destination_file} created with {num_numbered_keys_found} numbered keys.")
+        print(f"File {destination_file} created with {num_numbered_keys_found} numbered keys.")

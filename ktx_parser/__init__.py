@@ -1,3 +1,2 @@
 from .ktx_converter import KtxConverter
 from .getter_question_hint_answer import GetterQuestionHintAnswer
-from .decorators import DECORATORS

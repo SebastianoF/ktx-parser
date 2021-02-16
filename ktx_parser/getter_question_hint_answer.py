@@ -38,8 +38,8 @@ class GetterQuestionHintAnswer(AbsGetter):
         """ Store a python dictionary to a keyed text"""
         with open(output_file, "w+") as f:
             for k, val in self.ktx_dict.items():
-                f.write(f"{self.keystarter} {k}\n")
-                f.write(f"{val}\n\n")
+                f.write(f"{self.keystarter} {k}")
+                f.write(f"{val}")
 
     @staticmethod
     def get_getter_tag() -> str:
@@ -60,11 +60,11 @@ class GetterQuestionHintAnswer(AbsGetter):
 
     def get_initializer(self):
         return f"""
-        # Instantiate a getter into the session
-        # and call hints and answers via its attributes hints and answers,
-        # E.g. get.hint(3) or get.answer(3)
-        from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
-        get = GetterQuestionHintAnswer({self.input_file}).get_entries
+# Instantiate a getter into the session
+# and call hints and answers via its attributes hints and answers,
+# E.g. get.hint(3) or get.answer(3)
+from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
+get = GetterQuestionHintAnswer({self.input_file}).get_entries
         """
 
     def get_dict(self):
