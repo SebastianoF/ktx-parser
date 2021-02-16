@@ -28,9 +28,11 @@ class FormatMarkdown(AbsFormat):
         md_file = mdutils.MdUtils(file_name=str(destination_file))
 
         # - Write header if any:
-        for hdr_keys in self.getter.get_headers_keys():
-            prefix, suffix = keys_to_decorators(getter_tag, format_tag, hdr_keys)
-            md_file.write(prefix + ktx_dict[hdr_keys] + suffix)
+        for hdr_key in self.getter.get_headers_keys():
+            prefix, suffix, add_key = keys_to_decorators(getter_tag, format_tag, hdr_key)
+            if add_key:
+                prefix += f"{hdr_key}. "
+            md_file.write(prefix + ktx_dict[hdr_key] + suffix)
 
         # - Write numbered keys if any:
         n_keys = self.getter.get_quantity_numbered_keys()
@@ -42,11 +44,13 @@ class FormatMarkdown(AbsFormat):
         num_numbered_keys_found = 0
         for n in range(n_keys[0], n_keys[1] + 1):
             for key in numbered_keys:
-                prefix, suffix = keys_to_decorators(getter_tag, format_tag, key)
-                k = f"{key}{n}"
-                if k in ktx_dict.keys():
+                prefix, suffix, add_key = keys_to_decorators(getter_tag, format_tag, key)
+                nmb_key = f"{key}{n}"
+                if add_key:
+                    prefix += f"{n}. "
+                if nmb_key in ktx_dict.keys():
                     num_numbered_keys_found += 1
-                    md_file.write(prefix + ktx_dict[k] + suffix)
+                    md_file.write(prefix + ktx_dict[nmb_key] + suffix)
 
         # Delete file if one with the same name is found
         if destination_file.exists():
