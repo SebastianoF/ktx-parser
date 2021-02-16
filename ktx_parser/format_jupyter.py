@@ -5,11 +5,13 @@ import nbformat as nbf
 
 from ktx_parser.abs_format import AbsFormat
 from ktx_parser.abs_getter import AbsGetter
+from ktx_parser import DECORATORS
 
 
 class FormatJupyter(AbsFormat):
     def __init__(self, getter: AbsGetter):
         self.getter = getter
+        self.decorator = DECORATORS.get(self.getter.get_getter_tag()).get(self.get_format_tag())
 
     @staticmethod
     def get_format_tag() -> str:

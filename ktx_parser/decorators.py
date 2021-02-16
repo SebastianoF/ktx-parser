@@ -4,14 +4,14 @@ They are encoded in a dictionary as
 to the format of conversion."""
 
 
-decorators = {
-    "QuestionHintAnswer": {
-        "jupyter": {
+DECORATORS = {
+    "QuestionHintAnswer": {  # ktx tag 1
+        "jupyter": {  # format tag 1
             "header": ["", ""],
             "sub_header": ["", ""],
             "q": ["#### ", "\n\n"],
         },
-        "markdown": {
+        "markdown": {  # format tag 2
             "header": ["", ""],
             "q": ["#### ", "\n\n"],
             "h": ["`", "`\n"],

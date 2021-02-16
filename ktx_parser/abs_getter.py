@@ -3,6 +3,10 @@ from typing import Dict, List, Union
 
 
 class AbsGetter(ABC):
+    @staticmethod
+    def get_getter_tag() -> str:
+        pass
+
     @abstractstaticmethod
     def get_headers_keys() -> Union[List, Dict]:
         pass

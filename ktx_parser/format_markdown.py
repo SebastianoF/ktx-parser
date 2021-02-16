@@ -11,6 +11,10 @@ class FormatMarkdown(AbsFormat):
     def __init__(self, getter: AbsGetter):
         self.getter = getter
 
+    @staticmethod
+    def get_format_tag() -> str:
+        return "jupyter"
+
     def convert(self, destination_file: PosixPath, subset_numbered_keys: Optional[str] = None):
 
         ktx_dict = self.getter.get_dict()
@@ -29,6 +33,9 @@ class FormatMarkdown(AbsFormat):
 
         if isinstance(numbered_keys, dict):
             numbered_keys = numbered_keys[subset_numbered_keys]
+
+        # - load decorators
+        # TODO
 
         num_numbered_keys_found = 0
         for key in numbered_keys:
