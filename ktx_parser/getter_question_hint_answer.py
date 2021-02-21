@@ -69,7 +69,7 @@ class GetterQuestionHintAnswer(AbsGetter):
 # E.g. get.hint(3) or get.answer(3) or get.random_question()
 import os
 from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
-get = GetterQuestionHintAnswer('../../{self.input_file}').get_entries()
+get = GetterQuestionHintAnswer('{self.input_file}').get_entries()  # ADJUST path to relative folder
         """
 
     def get_dict(self):
