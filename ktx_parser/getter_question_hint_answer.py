@@ -81,18 +81,25 @@ get = GetterQuestionHintAnswer('../../{self.input_file}').get_entries()
     def get_entries(self):
         """Returns the object view of what the user will query"""
 
+        def warn(n):
+            if n not in self._num_keys:
+                print(f"No keys for {n}. Keys specified are in {self._num_keys}")
+
         def question(num: int):
-            return self.ktx_dict.get(f"q{num}")
+            warn(num)
+            print(self.ktx_dict.get(f"q{num}"))
 
         def hint(num: int):
-            return self.ktx_dict.get(f"h{num}")
+            warn(num)
+            print(self.ktx_dict.get(f"h{num}"))
 
         def answer(num: int):
-            return self.ktx_dict.get(f"a{num}")
+            warn(num)
+            print(self.ktx_dict.get(f"a{num}"))
 
         def random_question():
             num = random.sample(self._num_keys, 1)[0]
-            return f"{num}. " + self.ktx_dict.get(f"q{num}")
+            print(f"{num}. " + self.ktx_dict.get(f"q{num}"))
 
         dict_qha = dict(
             question=question,

@@ -17,10 +17,15 @@ The same file can contain numbered or unnumbered keys and corresponding values
 
 <img src="images/schema.png" width="80%" align="center">
 
-## Why
+## Why 
 
-This library generalizes the parser used to create the markdown and jupyter notebooks for the repository [numpy-100](https://github.com/rougier/numpy-100).
++ Main goal of the code is to generalise the parser used to create the markdown and jupyter notebooks for the repository [numpy-100](https://github.com/rougier/numpy-100).
 
++ This library is also an exercises to experiment the use of abstract classes in python.
+
+## Is it an overkill?
+
++ Yes, in its current state, to convert some text only to markdown and jupyter notebook this library is an overkill (for this reason the current version is not on pypi). Though its extensibility to other formats makes it reasonably useful.
 ## Where to start
 
 Install the library in a virtualenvironment with pip, then run the example in the examples folder:
@@ -30,6 +35,12 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 python examples/convert_examples.py 
+```
+
+## Install via github url
+
+```
+pip install ...
 ```
 
 ## Licence
