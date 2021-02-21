@@ -1,7 +1,12 @@
-"""Decorators are prefix and suffix for each numbered key. 
-They are encoded in a dictionary as
-{<prefix numbered key>: [<prefix value>, <key value>, <add_key>]}, according
-to the format of conversion."""
+"""Decorators allow to customize prefixes and suffixes for each numbered key.
+
+Decorators (nothing to do with python decorators, only prefix and suffix for the rendered file) 
+are encoded in a dictionary as
+```
+{<prefix numbered key>: [<prefix value>, <key value>, <add key to prefix>]} 
+```
+How the converted file will look is responsibility of this python module and `format_<FORMAT>.py`.
+"""
 
 from typing import Tuple
 
@@ -26,9 +31,9 @@ DECORATORS = {
 
 def keys_to_decorators(getter_tag: str, format_tag: str, key: str) -> Tuple[str, str, bool]:
     """
-    prefix, suffix = tags_to_deco(getter_tag, format_tag, key)
+    prefix, suffix, add_key_to_prefix = tags_to_deco(getter_tag, format_tag, key)
     if a value is found in the DECORATOR dictionary. If keys are not found then
-    it returns ('', '', False)
+    it returns ('', '', False), so the decorator has no effect on the converted file.
     """
     if getter_tag not in DECORATORS:
         return "", "", False
