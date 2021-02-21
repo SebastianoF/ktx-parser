@@ -1,5 +1,6 @@
 from typing import Dict, List, Union
-from pathlib import PosixPath
+from pathlib import PosixPath, Path
+import random
 
 from ktx_parser.abs_getter import AbsGetter
 from ktx_parser.object_view import ObjectView
@@ -10,10 +11,12 @@ class GetterQuestionHintAnswer(AbsGetter):
         self.input_file: PosixPath = input_file
         self.keystarter: str = "<"
         self.ktx_dict: Dict = None
+        self._num_keys: List = None
         self._ktx_to_dict()
 
     def _ktx_to_dict(self) -> Dict:
         """ parsing keyed text to a python dictionary. """
+        self.input_file = Path(self.input_file)
         if not self.input_file.exists():
             raise ValueError(f"Input path {self.input_file} does not exist.")
 
@@ -33,6 +36,7 @@ class GetterQuestionHintAnswer(AbsGetter):
                 ktx_dict.update({k: val.strip()})
 
         self.ktx_dict = ktx_dict
+        self._num_keys = [int(q.replace("q", "")) for q in self.ktx_dict if "q" in q]
 
     def _dict_to_ktx(self, output_file: PosixPath):
         """ Store a python dictionary to a keyed text"""
@@ -62,34 +66,39 @@ class GetterQuestionHintAnswer(AbsGetter):
         return f"""
 # Instantiate a getter into the session
 # and call hints and answers via its attributes hints and answers,
-# E.g. get.hint(3) or get.answer(3)
+# E.g. get.hint(3) or get.answer(3) or get.random_question()
+import os
 from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
-get = GetterQuestionHintAnswer('{self.input_file}'').get_entries
+get = GetterQuestionHintAnswer('../../{self.input_file}').get_entries()
         """
 
     def get_dict(self):
         return self.ktx_dict
 
     def get_quantity_numbered_keys(self) -> (int, int):
-        num_keys = [int(q.replace("q", "")) for q in self.ktx_dict if "q" in q]
-        return min(num_keys), max(num_keys)
+        return min(self._num_keys), max(self._num_keys)
 
     def get_entries(self):
         """Returns the object view of what the user will query"""
 
-        def question(self, num: int):
+        def question(num: int):
             return self.ktx_dict.get(f"q{num}")
 
-        def hint(self, num: int):
+        def hint(num: int):
             return self.ktx_dict.get(f"h{num}")
 
-        def answer(self, num: int):
+        def answer(num: int):
             return self.ktx_dict.get(f"a{num}")
+
+        def random_question():
+            num = random.sample(self._num_keys, 1)[0]
+            return f"{num}. " + self.ktx_dict.get(f"q{num}")
 
         dict_qha = dict(
             question=question,
             hint=hint,
             answer=answer,
+            random_question=random_question,
         )
 
         return ObjectView(dict_qha)

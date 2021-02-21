@@ -5,7 +5,7 @@ import mdutils
 
 from ktx_parser.abs_format import AbsFormat
 from ktx_parser.abs_getter import AbsGetter
-from ktx_parser.decorators import keys_to_decorators
+from ktx_parser.decorations import keys_to_decorations
 
 
 class FormatMarkdown(AbsFormat):
@@ -29,7 +29,7 @@ class FormatMarkdown(AbsFormat):
 
         # - Write header if any:
         for hdr_key in self.getter.get_headers_keys():
-            prefix, suffix, add_key = keys_to_decorators(getter_tag, format_tag, hdr_key)
+            prefix, suffix, add_key = keys_to_decorations(getter_tag, format_tag, hdr_key)
             if add_key:
                 prefix += f"{hdr_key}. "
             md_file.write(prefix + ktx_dict[hdr_key] + suffix)
@@ -44,7 +44,7 @@ class FormatMarkdown(AbsFormat):
         num_numbered_keys_found = 0
         for n in range(n_keys[0], n_keys[1] + 1):
             for key in numbered_keys:
-                prefix, suffix, add_key = keys_to_decorators(getter_tag, format_tag, key)
+                prefix, suffix, add_key = keys_to_decorations(getter_tag, format_tag, key)
                 nmb_key = f"{key}{n}"
                 if add_key:
                     prefix += f"{n}. "

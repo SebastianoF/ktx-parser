@@ -7,7 +7,7 @@ from pathlib import Path
 from ktx_parser import KtxConverter, GetterQuestionHintAnswer
 
 
-HERE = Path(__file__).parent.absolute()
+HERE = Path(__file__).parent
 
 # Input folder
 SOURCE = HERE / "source"
