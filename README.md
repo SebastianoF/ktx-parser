@@ -1,14 +1,25 @@
+<img src="images/logo.png" width="40%" align="right">
+
 # ktx-parser
 
-+ A keyed text is a text file divided into keys and values, made of text and parsed according to a configuration file.
+Simple parser for plain text (with keys!), to create text indexed with custom keys and to parse it via a python dictionary into an extensible range of formats.
+
+## What
+
++ A keyed text (extension `.ktx`) is a text file divided into keys and values, made of text and parsed into a dictionary according to a configuration file.
+The same file can contain numbered or unnumbered keys and corresponding values
 
 + The parser can contain html, markdown text, code, and general values with a custom format, and a custom way of distinguishing keys and text. 
-The conversion can happen via a custom converter into a range of formats. At the moment implemented for markdown, and jupyter notebook, but extensible to other formats.
 
+## How
 
-## Interface
++ The parsed dictionary is then converted via a key agnostic method in a range of formats, and through a specific set of decorations (format specific, but still keys agnostics, embellishment of the output). At the moment implemented for markdown, and jupyter notebook, but extensible to other formats.
 
+<img src="images/schema.png" width="80%" align="center">
 
+## Why
+
+This library generalizes the parser used to create the markdown and jupyter notebooks for the repository [numpy-100](https://github.com/rougier/numpy-100).
 
 ## Where to start
 
@@ -20,6 +31,8 @@ pip install -r requirements.txt
 
 python examples/convert_examples.py 
 ```
+
 ## Licence
 
-This is an open source repository released under MIT license.
+This is an open source repository released under MIT license. Please do contribute 
+
