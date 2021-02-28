@@ -40,7 +40,7 @@ python examples/convert_examples.py
 ## Install via github url
 
 ```
-pip install ...
+pip install git+https://github.com/SebastianoF/ktx-parser.git@v0.0.2
 ```
 
 ## Licence
