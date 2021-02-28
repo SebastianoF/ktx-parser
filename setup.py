@@ -9,7 +9,7 @@ with open("requirements.txt") as f:
 
 setup(
     name="ktx-parser",
-    version="0.0.2",
+    version="v0.0.2",
     description="Keyed text parser",
     long_description=readme,
     author="Sebastiano Ferraris",
