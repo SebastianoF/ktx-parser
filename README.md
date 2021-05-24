@@ -45,5 +45,5 @@ pip install git+https://github.com/SebastianoF/ktx-parser.git@v0.0.2
 
 ## Licence
 
-This is an open source repository released under MIT license. Please do contribute 
+This is an open source repository released under MIT license.
 
