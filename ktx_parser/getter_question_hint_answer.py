@@ -69,16 +69,9 @@ class GetterQuestionHintAnswer(AbsGetter):
 # E.g. get.hint(3) or get.answer(3) or get.random_question()
 
 import os
-from pathlib import Path
-import git
-
-
 from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
 
-repo = git.Repo('.', search_parent_directories=True)
-path_to_source = Path(repo.working_tree_dir) / "source" / "part1.ktx"
-
-get = GetterQuestionHintAnswer(path_to_source).get_entries()
+get = GetterQuestionHintAnswer({self.input_file}).get_entries()
         """
 
     def get_dict(self):
