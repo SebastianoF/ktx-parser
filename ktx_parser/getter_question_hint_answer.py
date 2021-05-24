@@ -71,7 +71,7 @@ class GetterQuestionHintAnswer(AbsGetter):
 import os
 from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
 
-get = GetterQuestionHintAnswer({self.input_file}).get_entries()
+get = GetterQuestionHintAnswer('{self.input_file}').get_entries()
         """
 
     def get_dict(self):
