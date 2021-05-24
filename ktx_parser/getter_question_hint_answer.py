@@ -67,9 +67,16 @@ class GetterQuestionHintAnswer(AbsGetter):
 # Instantiate a getter into the session
 # and call hints and answers via its attributes:
 # E.g. get.hint(3) or get.answer(3) or get.random_question()
+
 import os
+import git
+
 from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
-get = GetterQuestionHintAnswer('{self.input_file}').get_entries()  # ADJUST path to relative folder
+
+repo = git.Repo('.', search_parent_directories=True)
+path_to_source = Path(repo.working_tree_dir) / "source" / "part1.ktx"
+
+get = GetterQuestionHintAnswer(path_to_source).get_entries()
         """
 
     def get_dict(self):
