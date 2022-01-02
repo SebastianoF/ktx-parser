@@ -1,5 +1,6 @@
 """
-Example of converting the files in the `source` folder.
+Example of converting the files in the `source` folder to jupyter and to markdown.
+Sources example are from the repository pandas-100.
 """
 from pathlib import Path
 
