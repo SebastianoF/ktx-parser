@@ -36,7 +36,9 @@ class FormatJupyter(AbsFormat):
             nb["cells"].append(nbf.v4.new_markdown_cell(prefix + ktx_dict[hdr_key] + suffix))
 
         # - Write initializer - for interactive formats
-        nb["cells"].append(nbf.v4.new_code_cell(self.getter.get_initializer()))
+        interactive_initialiser = self.getter.get_interactive_initializer()
+        if interactive_initialiser is not None:
+            nb["cells"].append(nbf.v4.new_code_cell(interactive_initialiser))
 
         # - Write numbered keys if any:
         n_keys = self.getter.get_quantity_numbered_keys()

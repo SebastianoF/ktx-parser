@@ -16,7 +16,7 @@ class AbsGetter(ABC):
         pass
 
     @abstractmethod
-    def get_initializer(self) -> str:
+    def get_interactive_initializer(self) -> str:
         """ Initializer for interactive formats."""
 
     @abstractmethod

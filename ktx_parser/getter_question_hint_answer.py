@@ -62,17 +62,11 @@ class GetterQuestionHintAnswer(AbsGetter):
             "question_hint_answer": ["q", "h", "a"],
         }
 
-    def get_initializer(self):
-        return f"""
-# Instantiate a getter into the session
-# and call hints and answers via its attributes:
-# E.g. get.hint(3) or get.answer(3) or get.random_question()
-
-import os
-from ktx_parser.getter_question_hint_answer import GetterQuestionHintAnswer
-
-get = GetterQuestionHintAnswer('{self.input_file}').get_entries()
-        """
+    def get_interactive_initializer(self):
+        print("Interactive initialiser!")
+        if "interactive_initialisation" in self.ktx_dict.keys():
+            return self.ktx_dict.get("interactive_initialisation")
+        return None
 
     def get_dict(self):
         return self.ktx_dict
