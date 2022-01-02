@@ -63,7 +63,6 @@ class GetterQuestionHintAnswer(AbsGetter):
         }
 
     def get_interactive_initializer(self):
-        print("Interactive initialiser!")
         if "interactive_initialisation" in self.ktx_dict.keys():
             return self.ktx_dict.get("interactive_initialisation")
         return None
